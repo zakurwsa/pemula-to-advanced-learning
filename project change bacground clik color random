@@ -1,0 +1,13 @@
+          Create a project button click change background color
+prepare 2 file:file html and file js:
+file html used for has id like:
+  - BUTTON TWO
+  - HEADING
+  - BODY
+  - PARAGRAF
+
+file js used for has calling id in html.
+i will call id from html if you used class the used mediaquery not get element by id and dont forgot add in firstteks mark(. or #).
+create variable for call id and each one id one variable not many
+if after givein style in one button or two button it's up to you
+if you by now create variable which accomodate Give the style you want for the text, such as text size, padding, whether it uses a border or not.dont forget create
