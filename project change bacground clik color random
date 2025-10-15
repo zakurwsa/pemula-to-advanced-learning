@@ -1,4 +1,5 @@
-                                        Project background click randomly change 
+          Project background click randomly change 
+this my opini and explanation
 what must prepared?
  - a variabel which save id or class from html
  - two button which desired 
@@ -16,3 +17,99 @@ if one button not give lik this used like:
 btnb.addEventListener('click', () =>{
     alert('darkshadow');
 });
+
+this opni ai and explanation
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Object Model</title>
+    <style>
+        /* Basic styling for neat buttons */
+        button {
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 5px;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    
+    <button id="btnb">click me be</button>
+    <button id="btnw">click me we</button>
+    
+    <h1 class="heading1"></h1>
+    <p class="paragraf1"></p>
+    <script>
+        document.title = 'document object model';
+        
+        // --- 1. Variables to store IDs or Classes from HTML ---
+        const body = document.body;
+        const btnb = document.getElementById('btnb'); // 'be' Button
+        const btnw = document.getElementById('btnw'); // 'we' Button
+        const h1 = document.querySelector('.heading1');
+        const paragrafi = document.querySelector('.paragraf1');
+
+        // --- Initial Text Variable ---
+        // Used to revert the button text after the cursor moves away (mouseout)
+        const bawaan_teks ='click me we';
+        
+        // --- Applying Initial Style to the 'btnw' Button ---
+        btnw.style.fontSize = '10px';
+        btnw.style.border = 'none';
+        btnw.style.padding = '5px';
+        
+        // --- Initial Content Manipulation ---
+        h1.textContent ='Learning Java Script DOM';
+        paragrafi.innerHTML = '<marquee> With Fajar Fadillah</marquee>';
+
+        // --- 2. Create 'change background color' Function (Only generates color) ---
+        function warnaberubah(){
+            // Create a random hex color (#RRGGBB)
+            const kolor = '#' + Math.floor(Math.random ()*16777215).toString(16).padStart(6,'0'); 
+            return kolor;
+        }
+
+        // --- 3. Create 'for click' Function (klik) ---
+        function klik(){
+            // Change the background of the ENTIRE BODY (page)
+            body.style.backgroundColor = warnaberubah(); 
+            
+            // Add a new paragraph element (katabaru)
+            const katabaru = document.createElement('p');
+            katabaru.textContent ='that's awesome guys'; // Changed from 'mantap kali guys'
+            katabaru.style.color = '#2D6F95';
+            katabaru.style.fontSize = '7px';
+            body.append(katabaru); 
+            
+            // Show alert
+            alert('jancuk que'); // Retained the original phrase for flavor, as it seems intentional
+        }
+
+        // --- 4. Create Function 'if cursor touch area click' (mouseover) ---
+        function ganti_teks(){
+            btnw.textContent ='omaga'; // Button text changes
+        }
+        
+        // --- 5. Create Function 'if the cursor presses the click area then it returns like the cursor text before' (mouseout) ---
+        function ori_teks(){
+            btnw.textContent = bawaan_teks; // Button text reverts to initial text
+        }
+
+        // --- 6. Implementation of addEventListener (Event Linkage) ---
+
+        // Button 'btnb' (Example of 1 Button with Anonymous Function)
+        btnb.addEventListener('click', () =>{
+            alert('darkshadow');
+        });
+
+        // Button 'btnw' (Example of Multiple Event Listeners)
+        btnw.addEventListener('click', klik);       // Call 'klik' function when button is clicked
+        btnw.addEventListener('mouseover', ganti_teks);  // Call 'ganti_teks' function when cursor enters
+        btnw.addEventListener('mouseout', ori_teks);    // Call 'ori_teks' function when cursor leaves
+
+    </script>
+</body>
+</html>
