@@ -1,0 +1,127 @@
+import sys
+def input_user():   
+    try:
+#MENENTUKAN JUMLAH DATA YANG INGIN DICEK
+        batas_data = int(input('berapa banyak data ip yang ingin dicek : '))
+#MENGEMBALIKAN ULANG JIKA DATA YANG DIMASUKKAN BUKAN INTEGER
+    except ValueError:
+        print(f'\n ERROR: Input batas data harus berupa angka')
+        return None,None
+#MEMBUAT VARIABEL UNTUK DATA IP
+    data_ip = input('masukkan alamat ip anda atau tulis exit untuk keluar : ')
+#MENGEMBALIKAN DUA DATA AGAR BISA DIGUNAKAN DILUAR FUNGSI SECARA TERUS MENERUS
+    return batas_data,data_ip
+#PENGECEKAN KESALAHAN
+def ngecek_salah(data_ip):
+#PENGECEKAN DATA YANG DIMASUKKAN BERTULISKAN STR ATAU EXIT UNTUK MENGAKHIRI PROGRAM 
+    if data_ip.lower().strip() =='exit':
+        return 'TERIMAKASIH,PROGRAM TELAH DIHENTIKAN'
+#MENGECEK APAKAH DATA YANG DIMASUKKAN ITU KOSONG SEPERTI HANYA SPACE ATAUPUN TAB
+    if not data_ip.strip():
+        return 'DATA TIDAK VALID'
+#JIKA PENGECEKAN DATA INI FALSE SEMUA MAKA DIA DIKEMBALIKAN TRUE YANG BERARTI LANJUT
+    return True
+def ngecek_alamat(data_ip):
+#MEMBUAT VARIABEL UNTUK MENYIMPAN ARGUMEN YANG MEMILIKI PEMISAH TANDA (.)
+    part = data_ip.split('.')
+#MENGECEK JIKA DATA IP YANG DIMASUKKAN TIDAK 4 BUAH ATAU TANDA PEMISAHNYA ITU BUKAN (.)
+    if len(part) != 4:
+        return f'FORMAT IP TIDAK VALID. ALAMAT IP YANG TERDETEKSI {len(part)} BAGIAN '
+# UNTUK MENGITERASI DATA DARI VARIABEL ITU BERBENTUK INT
+    for data in part:
+        try:
+            num =int(data)
+#MENGEMBALIKAN NILAI JIKA YANG DIMASUKKAN ITU ADA YANG BBUKAN INT
+        except ValueError:
+            return f'format ip tidak valid {data} bukan angka'
+#DIGUNAKAN AGAR PENGGUNA MEMASUKKAN ANGKA 0 - 255 SAJA
+        if not (0 <= num <= 255):
+            return f'FORMAT IP TIDAK VALID :bagian {num} harus berada diantara 0 - 255 '
+#MENGEMBALIKAN DATA 1 DAN DATA 2 KARNA TADIKAN KITA MENGGUNAKAN SPLIT YANG MEMBUAT DATA KITA MENJADI (ANGKA1,ANGKA2,ANGKA3,ANGKA4)
+    return int(part[0]),int(part[1])
+def pengecekan_kelas(oktet):
+#PENGECEKAN OKTET UNTUK MENENTUKAN KELAS APA,RENTANG,DIGUNAKAN UNTUK APA
+    if 1 <= oktet <= 126:
+        kelas = ' A'
+        rentang = '1 - 126'
+        deskripsi = ''
+    elif 128 <= oktet <= 191:
+        kelas = ' B'
+        rentang = '128 - 191'
+        deskripsi = ''
+    elif 192 <= oktet <= 223:
+        kelas = ' C'
+        rentang = '192 - 223'
+        deskripsi = ''
+    elif 224 <= oktet <= 239:
+        kelas = ' D'
+        rentang = '224 - 239'
+        deskripsi = 'UNTUK MULTICAST'  
+    elif 240 <= oktet <= 255:
+        kelas = ' E'
+        rentang = '240 - 255'
+        deskripsi = ' UNTUK EKSPERIMEN'
+    else:
+        return 'ALAMAT IP TIDAK TERMASUK KELAS MANAPUN'
+#MENNGAMBALIKAN NILAI DARI HASIL KELAS,RENTANG, DAN DEKSRIPSI
+    
+    return f'KELAS : {kelas} ALAMAT IP BERADA DI RENTANG {rentang} {deskripsi} '
+def pengecekan_ip(oktet1,oktet2):
+#PENGECEKAN OKTET 1 DAN 2 YANG DIGUNAKAN UNTUK  MENENTUKAN ALAMAT IP PRIVAT KELAS APA
+    if oktet1 == 10:
+        return 'ALAMAT IP PRIVATE A RENTANG (10.0.0.0/8)'
+    elif oktet1 ==172 and (16 <= oktet2 <= 31):
+        return 'ALAMAT IP PRIVAT KELAS B RENTANG (172.16.0.0/12)'
+    elif oktet1 ==192 and oktet2 == 168:
+        return 'ALAMAT IP PRIVAT KELAS C RENTANG (192.168.0.0/16)'
+    else:
+        return False
+def program():
+#DUA DATA YANG MEMPUNYAI VALUE FUNGSI INPUT USER YAITU DATA DAN BATAS
+    batas,data = input_user()
+    if batas is None:
+        return
+    print (f'program akan mengecek hingga {batas} data ip')
+#MEMBUAT DATA 0 UNTUK PERBANDINGAN DI WHILE LOOP
+    cek_data = 0
+    while  cek_data < batas :
+#MEMBUAT VARIABEL YANG MEMILIKI NILAI DARI FUNGSI PENGECEKAN KESALAHAN ATAUPUN DIA MENULIS EXIT
+        hasil_dasar = ngecek_salah(data) 
+#PENGECEKAN JIKA DATA ITU BERKELAS STR DAN BERISI EXIT ATAUPUN STR DIA AKAN BERHENTI 
+        if isinstance (hasil_dasar,str):
+            print(f'\n {hasil_dasar}') 
+            if 'dihentikan' in hasil_dasar:
+                sys.exit()
+#JIKA DATA BUKAN STR MAKA LANJUT                
+            data = input('\n COBA MASUKKAN ALAMAT IP YANG BARU ')
+            continue
+#MEMBUAT VARIABEL YANG MEMILIKI NILAI DARI FUNGSI DIGUNAKAN UNTUK 2 VALUE TADI 
+        oktet_atau_eror = ngecek_alamat(data)
+        if isinstance(oktet_atau_eror,str):
+            print(f'\n CEK DATA KE - {cek_data + 1} : ERROR : {oktet_atau_eror}')
+        else:
+#MEMBUAT DUA VARIABEL YANG MEMPUNYAI 2 NILAI YANG DIKEMBALIKAN TADI
+            oktet1,oktet2 = oktet_atau_eror
+#MEMBUAT VARIABEL YANG MEMILIKI NILAI FUNGSI UNTUK OKTET KE SATU SAJA
+            hasil_kelas = pengecekan_kelas(oktet1)
+#MEMBUAT VARIABEL YANG MEMILIKI NILAI FUNGSI UNTUK OKTET KE SATU DAN KEDUA
+            hasil_privat = pengecekan_ip(oktet1,oktet2)
+#MENAMBAHKAN 1 UNTUK SETIAP PEMUTARAN digunakan untuk judul atas kayak data ke - 1 ipnya 12.34.3.2
+            print(f'cek data ke - {cek_data + 1} :alamat ip {data} valid')
+            print(f'hasil analisis : {hasil_kelas}')
+            if hasil_privat:
+                print(f'STATUS IP: {hasil_privat}')
+            else:
+                print(f'STATUS IP : ALAMAT IP PUBLIK (DAPAT DIRUTEKAN DI INTERNET)')
+ #digunakan untuk menambahkan variabel 0 agar menjadi lebih besar dari perbandingannya               
+        cek_data += 1
+        if cek_data < batas:
+            data = input('masukkan alamat ip selanjutnya: ')
+    print(f'\n BATAS PENGECEKAN TELAH SELESAI. SELESAI')
+#jalankan program
+if __name__ == '__main__':
+    program()
+        
+            
+        
+    
