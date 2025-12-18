@@ -1,0 +1,49 @@
+import csv
+def aset():
+    nama_file = 'file.csv'#nama file kita yang akan disimpan
+    header = ['ID' ,'NAMA ASET', 'KATEGORI', 'LEVEL RESIKO']
+    data_aset = [
+        ['A001', 'Server Utama Core Banking', 'Hardware', 'Critical'],
+        ['A002', 'Database Nasabah', 'Data', 'Critical'],
+        ['A003', 'Laptop Staff Finance', 'Hardware', 'Medium'],
+        ['A004', 'Aplikasi Mobile Banking', 'Software', 'High'],
+        ['A005', 'Dokumen SOP Keamanan', 'Data', 'Low'],
+        ['A006', 'UTAMA PY', 'hardware', 'Medium'],
+        ['A007', 'Laptop Staff Asuransi', 'Hardware', 'high'],
+        ['A008', 'Laptop Karyawan Biasa', 'Software', 'low']]
+    with open(nama_file,'w',newline='',encoding='utf-8') as cuy:
+        menulis = csv.writer(cuy)
+        menulis.writerow(header)#ini untuk tunggal seperti header
+        menulis.writerows(data_aset)#nah in untuk multi jadi dia membentuk perbaris
+    print(f'File {nama_file}: BERHASIL DIBUAT')
+def jumlah_aset():
+    nama_file = 'file.csv'
+    semuanya =[]#menyimpan data
+    jumlah = 0
+    with open(nama_file,'r',newline='',encoding='utf-8') as woy:
+        membaca = csv.DictReader(woy)#membaca filenya seperti dictionary dan sangat disarankan
+        for data in membaca:
+            jumlah += 1
+            nama = data['NAMA ASET']#Hanya mengeluarkan NAMA ASET SAJA
+            semuanya.append(nama)
+            print(f'BERHASIL MEMBACA KE-{jumlah} :{nama} ')
+    print(f'JUMLAH SEMUANYA {jumlah}')#hasil dari jumlah semuanya berapa kali perulangan
+    return semuanya
+def kategori():
+    nama_file = 'file.csv'
+    hardware = 0
+    software = 0
+    with open(nama_file,'r',newline='',encoding='utf-8') as woy:
+        membaca = csv.DictReader(woy)
+        for data in membaca:
+            nama = data['KATEGORI'].lower()#mengambil data dari header berjudul kategori
+            if nama == 'hardware':
+                hardware += 1
+            elif nama == 'software':
+                software += 1
+            
+    print(f'TOTAL DARI KATEGORI HARDWARE : {hardware}')
+    print(f'TOTAL DARI KATEGORI SOFTWARE : {software}')
+aset()
+jumlah_aset()
+kategori()
