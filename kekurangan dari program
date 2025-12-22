@@ -1,0 +1,51 @@
+import json
+import os
+
+# 1. MEMBACA DATA (Ilmu Rabu: JSON Load)
+data_audit_json = '''
+[
+    {"nama": "Server Utama", "skor": 95},
+    {"nama": "Database Nasabah", "skor": 75},
+    {"nama": "Printer Umum", "skor": 20}
+]
+'''
+daftar_aset = json.loads(data_audit_json)
+
+# 2. PROSES DATA (Ilmu Kamis: Loop & IF)
+for aset in daftar_aset:
+    nama = aset["nama"]
+    skor = aset["skor"]
+    
+    if skor >= 80:
+        kategori = "CRITICAL"
+    elif skor >= 50:
+        kategori = "MEDIUM"
+    else:
+        kategori = "LOW"
+        
+    # 3. AKSI SISTEM (Ilmu Jumat: OS Module)
+    # Membuat folder otomatis berdasarkan kategori risiko
+    path_folder = os.path.join("HASIL_AUDIT", kategori)
+    if not os.path.exists(path_folder):
+        os.makedirs(path_folder)
+    
+    # 4. MENULIS BUKTI (Ilmu Senin: Menulis File)
+    # Membuat file teks kosong di dalam folder tersebut sebagai penanda
+    nama_file_bukti = f"Bukti_{nama.replace(' ', '_')}.txt"#alasan kenapa direplace kosong agar bisa fleksibel
+    #dan dimasukkan dengan bebas lalu setiap kata itu ada space berupa tanda _
+    with open(os.path.join(path_folder, nama_file_bukti), 'w') as f:
+        f.write(f"Laporan Audit untuk {nama}\nSkor: {skor}\nStatus: {kategori}")
+
+print("Selesai! Semua data JSON sudah ditarik, diproses, dan dibuatkan foldernya.")
+'''====================KEKURANGAN LAPORAN ==================================
+- kekurangannya dalam data_json itu hanya ada nama dan skor sedangkan untuk seperti siapa yang memegang akses belum ada,
+- harusnya memiliki 2 kategori untuk mendapatkan hasil yang lebih spesifik
+- lalu memberikan saran kayak ouh ini harusnya menggunakan kata kunci yang kuat untuk sandi lapptop dan berikan kontrol jarak jauh
+
+- kembalikan nilai 0 atau continue jika ada salah satunya yang tidak terisi dan berikan penjelasan kayak nama:kosong memiliki skor tulis ulang namanya
+- buat semisalnya folder itu sudah ada apa yang harus dilakukan
+- berikan untuk alur kerja ini jika menghasilkan false dia harus kembali ke pengguna dan mendapatkan nilai true sampai pengguna ngetik selesai
+-gunakan perfungsi sih biar enak dan jelas
+- tidak ada pemberian untuk waktunya
+- membuat izin file agar siapa yang boleh mengganti dan hanya ada izin baca saja
+'''
