@@ -1,0 +1,132 @@
+print(f'\t\t\t PT.TELEKOMUNIKASI SI TOKTIK ')
+import json
+import os
+
+# 1. MEMBACA DATA (Ilmu Rabu: JSON Load)
+data_audit_json = '''
+[
+    {"nama": "Server Utama", "skor": 95},
+    {"nama": "Database Nasabah", "skor": 75},
+    {"nama": "Printer Umum", "skor": 20},
+    {"nama": "Base Transceiver station", "skor": 95},
+    {"nama": "Router dan switch", "skor": 80},
+    {"nama": "Fiber Optik", "skor": 85},
+    {"nama": "Layanan Digital", "skor": 85},
+    {"nama": "Firewall", "skor": 95},
+    {"nama": "Laptop Karyawan", "skor": 20},
+    {"nama": "Galon", "skor": 2},
+    {"nama": "CCTV", "skor": 85},
+    {"nama": "Aplikasi Seluler Pelanggan", "skor": 70},
+    {"nama": "Microave", "skor": 99},
+    {"nama": "Satelit", "skor": 99}]'''
+daftar_aset = json.loads(data_audit_json)
+
+# 2. PROSES DATA (Ilmu Kamis: Loop & IF)
+for aset in daftar_aset:
+    nama = aset["nama"]
+    skor = aset["skor"]
+    
+    if skor >= 80:
+        kategori = "CRITICAL"
+    elif skor >= 50:
+        kategori = "MEDIUM"
+    else:
+        kategori = "LOW"
+        
+    # 3. AKSI SISTEM (Ilmu Jumat: OS Module)
+    # Membuat folder otomatis berdasarkan kategori risiko
+    path_folder = os.path.join("HASIL_AUDIT", kategori)
+    if not os.path.exists(path_folder):
+        os.makedirs(path_folder)
+    
+    # 4. MENULIS BUKTI (Ilmu Senin: Menulis File)
+    # Membuat file teks kosong di dalam folder tersebut sebagai penanda
+    nama_file_bukti = f"Bukti_{nama.replace(' ', '_')}.txt"#alasan kenapa direplace kosong agar bisa fleksibel
+    #dan dimasukkan dengan bebas lalu setiap kata itu ada space berupa tanda _
+    with open(os.path.join(path_folder, nama_file_bukti), 'w') as f:
+        f.write(f"Laporan Audit untuk {nama}\nSkor: {skor}\nStatus: {kategori}")
+
+print("Selesai! Semua data JSON sudah ditarik, diproses, dan dibuatkan foldernya.")
+'''====================KEKURANGAN LAPORAN ==================================
+PLAN
+Siapa yang boleh mengganti dan hanya diberikan izin membaca di file
+Harus ada waktu kapan dibuatnya sebagai penanda
+tentukan port mana yang diizinkan terbuka
+harus ada log system
+ada batasan akses yang dilakukan oleh karyawan
+setiap variable nama harus ada penanggung jawabnya
+DO
+- kembalikan nilai 0 atau continue jika ada salah satunya yang tidak terisi dan berikan penjelasan kayak nama:kosong memiliki skor tulis ulang namanya
+- harusnya memiliki 2 kategori untuk mendapatkan hasil yang lebih spesifik
+- baik ketika gagal ataupun berhasil log system tetap ada
+CHECK
+- buat semisalnya folder itu sudah ada apa yang harus dilakukan
+- berikan untuk alur kerja ini jika menghasilkan false dia harus kembali ke pengguna dan mendapatkan nilai true sampai pengguna ngetik selesai
+jika router ada ip addres baru atau ada ip addres yang sama satu lain
+
+ACT
+- kekurangannya dalam data_json itu hanya ada nama dan skor sedangkan untuk seperti siapa yang memegang akses belum ada,
+- lalu memberikan saran kayak ouh ini harusnya menggunakan kata kunci yang kuat untuk sandi lapptop dan berikan kontrol jarak jauh
+- setiap kategori harusnya ada diberikan ID kayak untuk 95 dikasih id A + kalo diatas itu AAA ATAUA A+++
+''’
+
+
+
+==================== KEBIJAKAN YANG DIBERIKAN ==================================
+=== Log regulasi ======
+-	Pengecekan log untuk satelit 
+-	Pengecekan untuk setiap log disystem ataupun server
+-	Pengeekan log untuk server dilakukan 24H tiap hari menggunakan alat antu berupa AI
+-	Regulasi diindonesia untuk LOG dibidang TELEKOMUNIKASI paling minimal 5 tahun untuk menyimpan dan menjaga kerahasiannya
+-	Hot storage(0 – 3 bulan) : digunakan untuk monitoring real time , disimpan dissd dengan akses cepat untuk soc
+-	Warm storage ( 3 – 24 bulan) : log untuk investigasi forensic, dikompresi dan disimpan di HDD array
+-	Cold storage (24 – 60 bulan) : log untuk kepatuhan regulasi disimpan di worm storage (write once red many)
+-	Satelit dan core network disimpan minimal 5 tahun sesuai dengan permenkominfo NO. X/2023
+-	Semua log di hash dengan hash SHA-256 saat dibuat , hash disimpan terpisah untuk verifikasi integritas.
+=== Kebijakan untuk keamanan informasi ====
+-	Karyawan hanya memiliki akses yang sudah ditetapkan
+-	 tidak boleh membuka laptop perusahaan masuk ke sembarang web
+-	Tidak diizinkan menggunakan port berbahaya
+-	Tidak boleh menyambungkan flashdisk ke kantor
+-	Untuk setiap saluran harus nyambung di wifi perusahaan
+-	Penempatan time standard agar semua perangkat lunak waktunya sama
+=== Prosedur untuk karyawan ======
+-	Jika waktu istirahat sleepkan laptopnya
+-	Waktu pulang pulang semua tidak ada yang diam dikantor
+-	Setiap pelayanan customer di rolling 2 X 24H 
+-	Gunakan password yang kuat dan tambahkan MFA untuk setiap akun
+-	Setiap meja kerja karyawan diberikan penghalang agar karyawan focus ke diri mereka masing-masing
+-	Pembersih tidak diizinkan memegang laptop karyawan kecuali jika jatuh
+= Apakah mematuhi kebijakan yang ada baik internal maupun eksternal =
+-	Jika ada yang masuk ke sembarang web kayak bokep akan dikeluarkan jika karyawan yang memiliki titik vital untuk karyawan biasa akan diberikan skor 1 jika sampa 3 skor bakal dikeluarkan alasannya servernya berbeda dengan yang vital
+-	Setiap karyawan yang mengobrol ketika berbicara dan menganggu temannya bakalan dipanggil dan diingatkan
+-	Jika ada password atau akun yang tidak diberikan MFA dipanggil da nada kemungkinan bakalan dipecat
+-	Pembersih yang menghidupkan dan tau sandi akun karyawan bakalan diintrograsi seperti kamu melakukan itu untuk siapa dan menanyakan dia tau celah itu seperti apa
+-	Jika ada karyawan yang mengakses bukan bagiannya maka akan langsung dipecat
+
+ PERBANDINGAN ISO 27001 DAN NIS CISF 
+Tahapan	ISO 27001 (Annex A)	NIST CSF (Fungsi Inti)
+Persiapan	Organization Controls(aser & kebijakan)	GOVERN & IDENTIFY
+Pertahanan	Access Control (A.9) =>akses dan enskripsi	PROTECT
+Pengawasan	Logging & Monitoring (A.12) => logs	DETECT
+Penanganan	Incident Management (A.16)	RESPOND
+Pemulihan	Business Continuity (A.17)	RECOVER
+
+
+NO.	KONTROL ANNEX A ISO 27001	PERTANYAAN YANG DITANYAKAN	BUKTI YANG DICARI	APAKAH TERLAKSANA (YA/NO)
+1	control A.5(police information security)	APAKAH KARYAWAN SUDAH DIBERI TAHUKAN KEBIJAKAN ITU?,	TANYA KEPADA KARYAWAN DAN LIHAT DI GRUP WA	 
+ 	 	APAKAH PIHAK BERWENANG SUDAH MEMBERIKAN IZIN KEPADA KEBIJAKAN TERSEBUT	LIHAT TANDA TANGAN,DAN TANYAKAN KEMBALI	 
+ 	 	APAKAH SEMUA CATATAN ITU SUDAH MEMPERTIMBANKAN DAMPAKNYA?	SUDAH ADA PERTIMBANGAN RISK & REWARD YANG MASUK AKAL	 
+2	contol A.12 (operation security)	APAKAH OPERASI TERSEBUT SUDAH MENGIKUTI SOP?	LIHAT DIPERUSAHAAN ITU DAN LIHAT POIN SOP TERSEBUT	 
+ 	 	APAKAH ADA PENCATATAN DAN PEMANTAUAN?	KITA TANYAKAN LOG SYSTEM KE PEGAWAI IT	 
+ 	 	APAKAH SUDAH MENEMUKAN INFORMASI DARI KERENTANAN TERSEBUT?	DARI LOG,ADA ANOMALI TIDAK,WAKTU SEBELUM TERJADI	 
+3	audit	APAKAH PERUSAHAAN SUDAH MENGIKUTI KEBIJAKAN INTERNAL DAN EKSTERNAL?	KITA LIHAT DARI APA YANG DILAKUKAN OLEH PEGAWAI DAN PERUSAHAAN ITU SESUAI TIDAK DENGAN POIN -POINNYA	 
+ 	 	APAKAH KONTROL TERSEBUT EFEKTIF UNTUK MENCEGAH RESIKO?	KITA LIHAT SKENARIO DAN MITIGASINYA APAKAH EFEKTIF ATAU MALAH MENGHABISKAN WAKTU	 
+4	BC	APAKAH PERUSAHAAN TETAP BISA BERJALAN DI TENGAH BENCANA?	Lihat dokumen hasil simulasi/uji coba DR (Disaster Recovery) & cek ketersediaan backup satelit.	 
+ 	 	APAKAH SOP KETIKA BC SUDAH DIBERITAHUKAN SEMUANYA?	Cek daftar hadir pelatihan BCP atau tanyakan karyawan: "Apa yang kamu lakukan jika server mati?"	 
+
+ 
+-	
+
+
+-	
